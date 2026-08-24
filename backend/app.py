@@ -82,10 +82,22 @@ def predict_csv():
 
     df.to_csv(result_path, index=False)
 
+    attack_counts = pd.Series(attack_names).value_counts().to_dict()
+
     return jsonify({
         "message": "Prediction completed",
-        "rows_processed": len(df)
+        "rows_processed": len(df),
+        "attack_counts": attack_counts
     })
+
+from flask import send_file
+
+@app.route("/api/download-results")
+def download_results():
+    return send_file(
+        "uploads/prediction_results.csv",
+        as_attachment=True
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
