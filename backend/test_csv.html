@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Test</title>
+</head>
+<body>
+    <h2>Upload CSV</h2>
+
+    <input type="file" id="csvFile">
+    <button onclick="uploadCSV()">Upload</button>
+
+    <pre id="result"></pre>
+
+    <script>
+        async function uploadCSV() {
+            const fileInput = document.getElementById("csvFile");
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch(
+                "http://127.0.0.1:5000/api/predict/csv",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            document.getElementById("result").textContent =
+                JSON.stringify(result, null, 2);
+        }
+    </script>
+</body>
+</html>

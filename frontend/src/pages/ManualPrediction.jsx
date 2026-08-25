@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 
 function ManualPrediction() {
-
   const [formData, setFormData] = useState({
     Is_CH: "",
     ADV_S: "",
@@ -12,6 +11,34 @@ function ManualPrediction() {
   });
 
   const [result, setResult] = useState("");
+
+  const attackInfo = {
+    Normal: {
+      risk: "Low",
+      color: "#22c55e",
+      description: "Normal network behavior detected."
+    },
+    TDMA: {
+      risk: "Medium",
+      color: "#f59e0b",
+      description: "Potential manipulation of TDMA scheduling."
+    },
+    Grayhole: {
+      risk: "Medium",
+      color: "#f59e0b",
+      description: "Node selectively drops packets."
+    },
+    Blackhole: {
+      risk: "High",
+      color: "#ef4444",
+      description: "Malicious node drops all packets."
+    },
+    Flooding: {
+      risk: "Critical",
+      color: "#dc2626",
+      description: "Massive packet flooding causing network congestion."
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -24,79 +51,117 @@ function ManualPrediction() {
     e.preventDefault();
 
     try {
-
       const response = await axios.post(
         "http://127.0.0.1:5000/api/predict/manual",
         formData
       );
 
       setResult(response.data.prediction);
-
     } catch (error) {
       console.log(error);
+      alert("Prediction Failed");
     }
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="manual-container">
 
-      <h2>Manual Prediction</h2>
+      <div className="manual-card">
 
-      <form onSubmit={handleSubmit}>
+        <h1>🛡 Manual Attack Prediction</h1>
 
-        <input
-          type="number"
-          name="Is_CH"
-          placeholder="Is_CH"
-          onChange={handleChange}
-        />
+        <p>
+          Enter the Top-5 important features and predict the attack type.
+        </p>
 
-        <br /><br />
+        <form onSubmit={handleSubmit}>
 
-        <input
-          type="number"
-          name="ADV_S"
-          placeholder="ADV_S"
-          onChange={handleChange}
-        />
+          <div className="input-group">
+            <label>Is_CH</label>
+            <input
+              type="number"
+              name="Is_CH"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <br /><br />
+          <div className="input-group">
+            <label>ADV_S</label>
+            <input
+              type="number"
+              name="ADV_S"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          type="number"
-          name="SCH_S"
-          placeholder="SCH_S"
-          onChange={handleChange}
-        />
+          <div className="input-group">
+            <label>SCH_S</label>
+            <input
+              type="number"
+              name="SCH_S"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <br /><br />
+          <div className="input-group">
+            <label>Data_Sent_To_BS</label>
+            <input
+              type="number"
+              name="Data_Sent_To_BS"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <input
-          type="number"
-          name="Data_Sent_To_BS"
-          placeholder="Data_Sent_To_BS"
-          onChange={handleChange}
-        />
+          <div className="input-group">
+            <label>Expaned Energy</label>
+            <input
+              type="number"
+              step="any"
+              name="Expaned Energy"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <br /><br />
+          <button
+            type="submit"
+            className="predict-btn"
+          >
+            Predict Attack
+          </button>
 
-        <input
-          type="number"
-          step="any"
-          name="Expaned Energy"
-          placeholder="Expaned Energy"
-          onChange={handleChange}
-        />
+        </form>
 
-        <br /><br />
+      </div>
 
-        <button type="submit">
-          Predict
-        </button>
+      {result && (
 
-      </form>
+        <div className="result-card">
 
-      <h3>Prediction: {result}</h3>
+          <h2>Prediction Result</h2>
+
+          <h1>{result}</h1>
+
+          <div
+            className="risk-badge"
+            style={{
+              background: attackInfo[result].color
+            }}
+          >
+            {attackInfo[result].risk} Risk
+          </div>
+
+          <p>
+            {attackInfo[result].description}
+          </p>
+
+        </div>
+
+      )}
 
     </div>
   );

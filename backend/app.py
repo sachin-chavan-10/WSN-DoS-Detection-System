@@ -75,6 +75,10 @@ def predict_csv():
 
     df["Predicted Attack"] = attack_names
 
+    preview = df.head(20).to_dict(orient="records")
+
+    attack_counts = pd.Series(attack_names).value_counts().to_dict()
+
     result_path = os.path.join(
         UPLOAD_FOLDER,
         "prediction_results.csv"
@@ -85,10 +89,11 @@ def predict_csv():
     attack_counts = pd.Series(attack_names).value_counts().to_dict()
 
     return jsonify({
-        "message": "Prediction completed",
-        "rows_processed": len(df),
-        "attack_counts": attack_counts
-    })
+    "message": "Prediction completed",
+    "rows_processed": len(df),
+    "attack_counts": attack_counts,
+    "preview": preview
+})
 
 from flask import send_file
 
