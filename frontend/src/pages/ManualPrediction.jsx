@@ -52,7 +52,7 @@ function ManualPrediction() {
 
     try {
       const response = await axios.post(
-        "https://https://wsn-dos-detection-system.onrender.com/api/predict/manual",
+        "https://wsn-dos-detection-system.onrender.com/api/predict/manual",
         formData
       );
 
