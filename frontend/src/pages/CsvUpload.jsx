@@ -35,7 +35,7 @@ function CsvUpload() {
         try {
 
             const response = await axios.post(
-                "http://127.0.0.1:5000/api/predict/csv",
+                "https://wsn-dos-detection-system.onrender.com/api/predict/csv",
                 formData
             );
 
