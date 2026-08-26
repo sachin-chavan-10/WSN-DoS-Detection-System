@@ -1,37 +1,96 @@
 function About() {
+
   const attacks = [
     {
       name: "Normal",
-      desc: "Legitimate network activity."
+      risk: "Low",
+      icon: "✅",
+      desc: "Legitimate network activity where sensor nodes communicate normally without malicious behavior."
     },
     {
       name: "Flooding",
-      desc: "Excessive packets causing resource exhaustion."
+      risk: "Critical",
+      icon: "🚨",
+      desc: "An attacker sends excessive packets to overwhelm network resources, causing congestion and denial of service."
     },
     {
       name: "Blackhole",
-      desc: "Malicious node drops packets."
+      risk: "High",
+      icon: "⚫",
+      desc: "A malicious node advertises itself as a valid route and then drops all received packets."
     },
     {
       name: "Grayhole",
-      desc: "Node selectively drops packets."
+      risk: "Medium",
+      icon: "⚠️",
+      desc: "A compromised node selectively drops packets, making detection more difficult than Blackhole attacks."
     },
     {
       name: "TDMA",
-      desc: "Manipulation of TDMA scheduling."
+      risk: "Medium",
+      icon: "⏱️",
+      desc: "An attacker manipulates TDMA scheduling information, disrupting communication among sensor nodes."
     }
   ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Attack Information</h1>
+    <div className="about-container">
 
-      {attacks.map((a) => (
-        <div key={a.name}>
-          <h3>{a.name}</h3>
-          <p>{a.desc}</p>
-        </div>
-      ))}
+      <div className="about-hero">
+
+        <h1>🛡 Attack Information Center</h1>
+
+        <p>
+          Learn about the attack categories detected by the
+          Wireless Sensor Network DoS Detection System.
+        </p>
+
+      </div>
+
+      <div className="attack-grid">
+
+        {attacks.map((attack) => (
+
+          <div
+            key={attack.name}
+            className="attack-card"
+          >
+
+            <h2>
+              {attack.icon} {attack.name}
+            </h2>
+
+            <span className="risk-tag">
+              {attack.risk} Risk
+            </span>
+
+            <p>
+              {attack.desc}
+            </p>
+
+          </div>
+
+        ))}
+
+      </div>
+
+      <div className="info-card">
+
+        <h2>About the Dataset</h2>
+
+        <p>
+          This project uses the WSN-DS dataset to train machine learning
+          models capable of detecting Denial of Service attacks in
+          Wireless Sensor Networks.
+        </p>
+
+        <p>
+          The system classifies network behavior into five categories:
+          Normal, Flooding, Blackhole, Grayhole, and TDMA attacks.
+        </p>
+
+      </div>
+
     </div>
   );
 }
